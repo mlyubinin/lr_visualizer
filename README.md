@@ -5,7 +5,7 @@ LR Visualizer
 ## What does it do?
 LR visualizer helps see how linear regression performs on samples with different type of association between features (linear and non-linear) and what type of transformations help in which situation.
 
-## How to use?
+## How do I use it?
 1. Pick a sample size (from 0 to 1000 cases)
 2. Pick type of association between X and Y features of the sample
 3. Pick a transformation to apply to the data prior to fitting a linear model

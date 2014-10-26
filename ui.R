@@ -1,9 +1,8 @@
 library(shiny)
+library(markdown)
 
-shinyUI(fluidPage(
-
-  titlePanel('Linear Regression Visualizer'),
-
+shinyUI(navbarPage('',
+ tabPanel('LR Visualizer',
   sidebarLayout(
     sidebarPanel(
       sliderInput('rows',
@@ -18,7 +17,7 @@ shinyUI(fluidPage(
         ),
       radioButtons('transform',
                    'Pre-regression transformation',
-                   c('None', '1/y', '1/y^2', '1/sqrt(y)', 'e^y', 'log(y)'),
+                   c('None', 'y^2', 'sqrt(y)', 'log(y)', '-1/y', '-1/sqrt(y)'),
                    selected = 'None'
       ),
       radioButtons('show',
@@ -34,4 +33,6 @@ shinyUI(fluidPage(
       wellPanel(uiOutput('options'))
     )
   )
+ ),
+ tabPanel('Help', includeMarkdown('README.md'))
 ))

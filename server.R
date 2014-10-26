@@ -5,21 +5,21 @@ library(caret)
 shinyServer(function(input, output) {
 
   df = reactive({
-    x = runif(input$rows, min = -50, max = 50)
+    x = runif(input$rows, min = 10, max = 110)
     if (input$relationship == 'Linear'){
-      y = runif(1, min=5, max=10) + runif(1, min=-3, max=3) * x + rnorm(input$rows, mean = 0, sd=20)
+      y = runif(1, min=5, max=10) + runif(1, min=0, max=6) * x + rnorm(input$rows, mean = 60, sd=20)
     }
     else if (input$relationship == 'Quadratic'){
-      y = runif(1, min=5, max=10) + runif(1, min=-3, max=3) * x + runif(1, min=-3, max=3) * x^2 + rnorm(input$rows, mean = 0, sd=20^2)
+      y = runif(1, min=5, max=10) + runif(1, min=0, max=6) * x + runif(1, min=0, max=6) * x^2 + rnorm(input$rows, mean = (20^2)*2, sd=30^2)
     }
     else if (input$relationship == 'Cubic'){
-      y = runif(1, min=5, max=10) + runif(1, min=-3, max=3) * x + runif(1, min=-3, max=3) * x^2 + runif(1, min=-3, max=3) * x^3 + rnorm(input$rows, mean = 0, sd=25^3)
+      y = runif(1, min=5, max=10) + runif(1, min=0, max=6) * x + runif(1, min=0, max=6) * x^2 + runif(1, min=0, max=6) * x^3 + rnorm(input$rows, mean = (25^2), sd=30^3)
     }
     else if (input$relationship == 'Exponential'){
-      y = runif(1, min=5, max=10) + runif(1, min=-3, max=3) * exp(x/20) + rnorm(input$rows, mean = 0, sd=3)
+      y = runif(1, min=5, max=10) + runif(1, min=0, max=6) * exp(x/20) + rnorm(input$rows, mean = 9, sd=9)
     }
     else if (input$relationship == 'Logarithmic'){
-      y = runif(1, min=5, max=10) + runif(1, min=-3, max=3) * log(x+51) + rnorm(input$rows, mean = 0, sd=.5)
+      y = runif(1, min=5, max=10) + runif(1, min=0, max=6) * log(x) + rnorm(input$rows, mean = 1.5, sd=.5)
     }
     data.frame(x=x, y=y)[order(x),]
   })
@@ -28,18 +28,18 @@ shinyServer(function(input, output) {
     if (input$transform == 'None'){
       df()
     }
-    else if (input$transform == '1/y'){
-      data.frame(x=df()$x, y=1/df()$y)
+    else if (input$transform == '-1/y'){
+      data.frame(x=df()$x, y=-1/df()$y)
     }
-    else if (input$transform == '1/y^2'){
-      data.frame(x=df()$x, y = 1/(df()$y)^2)
+    else if (input$transform == 'y^2'){
+      data.frame(x=df()$x, y = (df()$y)^2)
     }
-    else if (input$transform == '1/sqrt(y)'){
-      data.frame(x=df()$x, y = 1/sqrt(df()$y))
+    else if (input$transform == 'sqrt(y)'){
+      data.frame(x=df()$x, y = sqrt(df()$y))
     }  
-    else if (input$transform == 'e^y'){
-      data.frame(x=df()$x, y = exp(df()$y))
-    }    
+    else if (input$transform == '-1/sqrt(y)'){
+      data.frame(x=df()$x, y = -1/sqrt(df()$y))
+    }  
     else if (input$transform == 'log(y)'){
       data.frame(x=df()$x, y = log(df()$y))
     }  
@@ -54,18 +54,18 @@ shinyServer(function(input, output) {
     if (input$transform == 'None'){
       data.frame(x=df()$x, yhat = yhat_transformed)
     }
-    else if (input$transform == '1/y'){
-      data.frame(x=df()$x, yhat = 1/yhat_transformed)      
+    else if (input$transform == '-1/y'){
+      data.frame(x=df()$x, yhat = -1/yhat_transformed)      
     }
-    else if (input$transform == '1/y^2'){
-      data.frame(x=df()$x, yhat = 1/sqrt(yhat_transformed))
+    else if (input$transform == 'y^2'){
+      data.frame(x=df()$x, yhat = sqrt(yhat_transformed))
     }    
-    else if (input$transform == '1/sqrt(y)'){
-      data.frame(x=df()$x, yhat = 1/yhat_transformed^2)
+    else if (input$transform == 'sqrt(y)'){
+      data.frame(x=df()$x, yhat = yhat_transformed^2)
     }    
-    else if (input$transform == 'e^y'){
-      data.frame(x=df()$x, yhat = log(yhat_transformed))
-    }  
+    else if (input$transform == '-1/sqrt(y)'){
+      data.frame(x=df()$x, yhat = -1/yhat_transformed^2)
+    }    
     else if (input$transform == 'log(y)'){
       data.frame(x=df()$x, yhat = exp(yhat_transformed))
     }
